@@ -12,6 +12,7 @@
 
 @interface UTQuestion : NSObject
 
+@property (nonatomic) NSInteger questionID;
 @property (strong, nonatomic) NSDate * date;
 @property (copy, nonatomic) NSString * title;
 @property (strong, nonatomic) UTPerson * person;

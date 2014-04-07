@@ -43,6 +43,14 @@ NSString * StackOverflowSearchFailedError = @"StackOverflowSearchFailedError";
     }
 }
 
+- (void)fetchBodyForQuestion:(UTQuestion *)question {
+    
+}
+
+- (void)fetchQuestionBodyFailedWithError:(NSError *)error {
+    
+}
+
 #pragma mark - Private Methods
 
 - (void)tellDelegateAboutQuestionSearchError:(NSDictionary *)errorInfo {

@@ -30,6 +30,8 @@ typedef NS_ENUM(NSInteger, StackOverflowManagerErrorCode) {
 @interface UTStackOverflowManager : NSObject
 
 - (void)fetchQuestionsOnTopic:(UTTopic *)topic;
+- (void)fetchBodyForQuestion:(UTQuestion *)question;
+- (void)fetchQuestionBodyFailedWithError:(NSError *)error;
 - (void)searchingForQuestionsFailedWithError:(NSError *)error;
 - (void)receivedQuestionsJSON:(NSString *)objectNotation;
 

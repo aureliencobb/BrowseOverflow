@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, QuestionBuilderErrorCode) {
+    QuestionBuilderInvalidJSONError,
+    QuestionBuilderMissingDataError
+};
+
+extern NSString * const QuestionBuilderErrorDomain;
+
 @interface UTQuestionBuilder : NSObject
 
 - (NSArray *)questionsFromJSON:(NSString *)JSON error:(NSError *__autoreleasing *)error;

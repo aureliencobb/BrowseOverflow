@@ -10,4 +10,8 @@
 
 @implementation UTStackOverflowCommunicator
 
+- (void)searchForQuestionsWithTag:(NSString *)tag {
+    
+}
+
 @end
