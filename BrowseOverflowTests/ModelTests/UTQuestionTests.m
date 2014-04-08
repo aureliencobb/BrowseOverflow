@@ -13,6 +13,7 @@
     UTQuestion * question;
     UTAnswer * lowScoreAnswer;
     UTAnswer * highScoreAnswer;
+    UTPerson * asker;
 }
 
 @end
@@ -25,8 +26,8 @@
     question.date = [NSDate distantPast];
     question.title = @"Do iPhones dream of electric sheeps?";
     question.score = 42;
-    question.person = [[UTPerson alloc] initWithName:@"Aurelien Cobb" avatarLocation:@"http://example.com/avatar.png"];
-    
+    asker = [[UTPerson alloc] initWithName:@"Aurelien Cobb" avatarLocation:@"http://example.com/avatar.png"];
+    question.person = asker;
     UTAnswer * acceptedAnswer = [[UTAnswer alloc] init];
     acceptedAnswer.accepted = YES;
     
@@ -42,6 +43,7 @@
 }
 
 - (void)tearDown {
+    asker = nil;
     question = nil;
     lowScoreAnswer = nil;
     highScoreAnswer = nil;
@@ -63,7 +65,7 @@
 }
 
 - (void)testThatQuestonIsAskedByPerson {
-    XCTAssertNotNil(question.person, @"The question must be asked by a person");
+    XCTAssertEqualObjects(question.person, asker, @"The question must be asked by a person");
 }
 
 - (void)testQuestionsCanHaveAnswersAdded {

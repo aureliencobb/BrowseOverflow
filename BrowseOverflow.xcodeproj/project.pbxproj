@@ -37,6 +37,9 @@
 		4A2ED8DA18F0A3F50028805A /* UTQuestionBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A2ED8D818F0A3F50028805A /* UTQuestionBuilder.m */; };
 		4A2ED8DE18F0A4080028805A /* FakeQuestionBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A2ED8DC18F0A4080028805A /* FakeQuestionBuilder.m */; };
 		4A2ED8E018F0B00E0028805A /* UTQuestionBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A2ED8DF18F0B00E0028805A /* UTQuestionBuilderTests.m */; };
+		4A4FC4C618F2DBF1009FA080 /* UTPerson+Creation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A4FC4C518F2DBF1009FA080 /* UTPerson+Creation.m */; };
+		4AFDB35918F4515D000AF8C2 /* UTAnswerBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AFDB35818F4515D000AF8C2 /* UTAnswerBuilder.m */; };
+		4AFDB35A18F4515D000AF8C2 /* UTAnswerBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AFDB35818F4515D000AF8C2 /* UTAnswerBuilder.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +97,10 @@
 		4A2ED8DB18F0A4080028805A /* FakeQuestionBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeQuestionBuilder.h; sourceTree = "<group>"; };
 		4A2ED8DC18F0A4080028805A /* FakeQuestionBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeQuestionBuilder.m; sourceTree = "<group>"; };
 		4A2ED8DF18F0B00E0028805A /* UTQuestionBuilderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UTQuestionBuilderTests.m; sourceTree = "<group>"; };
+		4A4FC4C418F2DBF1009FA080 /* UTPerson+Creation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UTPerson+Creation.h"; sourceTree = "<group>"; };
+		4A4FC4C518F2DBF1009FA080 /* UTPerson+Creation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UTPerson+Creation.m"; sourceTree = "<group>"; };
+		4AFDB35718F4515D000AF8C2 /* UTAnswerBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UTAnswerBuilder.h; sourceTree = "<group>"; };
+		4AFDB35818F4515D000AF8C2 /* UTAnswerBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UTAnswerBuilder.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				4A2ED88518F0150F0028805A /* Main.storyboard */,
+				4A4FC4C318F2DBD2009FA080 /* Categories */,
 				4A2ED8A818F0154E0028805A /* Classes */,
 				4A2ED88B18F0150F0028805A /* Images.xcassets */,
 				4A2ED87A18F0150F0028805A /* Supporting Files */,
@@ -214,6 +222,8 @@
 				4A2ED8D018F06DAC0028805A /* UTStackOverflowCommunicator.m */,
 				4A2ED8D718F0A3F50028805A /* UTQuestionBuilder.h */,
 				4A2ED8D818F0A3F50028805A /* UTQuestionBuilder.m */,
+				4AFDB35718F4515D000AF8C2 /* UTAnswerBuilder.h */,
+				4AFDB35818F4515D000AF8C2 /* UTAnswerBuilder.m */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -282,6 +292,15 @@
 			name = Mocks;
 			path = BrowseOverflowTests/Mocks;
 			sourceTree = SOURCE_ROOT;
+		};
+		4A4FC4C318F2DBD2009FA080 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				4A4FC4C418F2DBF1009FA080 /* UTPerson+Creation.h */,
+				4A4FC4C518F2DBF1009FA080 /* UTPerson+Creation.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -384,6 +403,8 @@
 				4A2ED8B518F018A60028805A /* UTTopic.m in Sources */,
 				4A2ED8CA18F06AA30028805A /* UTStackOverflowManager.m in Sources */,
 				4A2ED8D118F06DAC0028805A /* UTStackOverflowCommunicator.m in Sources */,
+				4A4FC4C618F2DBF1009FA080 /* UTPerson+Creation.m in Sources */,
+				4AFDB35918F4515D000AF8C2 /* UTAnswerBuilder.m in Sources */,
 				4A2ED8BD18F03CD80028805A /* UTPerson.m in Sources */,
 				4A2ED8D918F0A3F50028805A /* UTQuestionBuilder.m in Sources */,
 				4A2ED88018F0150F0028805A /* main.m in Sources */,
@@ -407,6 +428,7 @@
 				4A2ED8E018F0B00E0028805A /* UTQuestionBuilderTests.m in Sources */,
 				4A2ED8DA18F0A3F50028805A /* UTQuestionBuilder.m in Sources */,
 				4A2ED8DE18F0A4080028805A /* FakeQuestionBuilder.m in Sources */,
+				4AFDB35A18F4515D000AF8C2 /* UTAnswerBuilder.m in Sources */,
 				4A2ED8D618F06DE40028805A /* MockStackOverflowCommunicator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -604,6 +626,7 @@
 				4A2ED8A418F0150F0028805A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4A2ED8A518F0150F0028805A /* Build configuration list for PBXNativeTarget "BrowseOverflowTests" */ = {
 			isa = XCConfigurationList;
@@ -612,6 +635,7 @@
 				4A2ED8A718F0150F0028805A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

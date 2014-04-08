@@ -11,6 +11,12 @@
 NSString * StackOverflowManagerError = @"StackOverflowManagerError";
 NSString * StackOverflowSearchFailedError = @"StackOverflowSearchFailedError";
 
+@interface UTStackOverflowManager()
+
+@property (strong, nonatomic) UTQuestion * questionNeedingBody;
+
+@end
+
 @implementation UTStackOverflowManager
 
 - (void)setDelegate:(id<UTStackOverflowManagerDelegate>)delegate {
@@ -43,12 +49,21 @@ NSString * StackOverflowSearchFailedError = @"StackOverflowSearchFailedError";
     }
 }
 
-- (void)fetchBodyForQuestion:(UTQuestion *)question {
-    
+- (void)receivedQuestionBodyJSON:(NSString *)objectNotation {
+    [self.questionBuilder fillQuestionBodyFromQuestion:self.questionNeedingBody withJSON:objectNotation error:nil];
 }
 
-- (void)fetchQuestionBodyFailedWithError:(NSError *)error {
-    
+- (void)fetchBodyForQuestion:(UTQuestion *)question {
+    [self.communicator downloadQuestionBodyWithID:question.questionID];
+    self.questionBuilder.questionToFill = question;
+}
+
+- (void)fetchingQuestionBodyFailedWithError:(NSError *)error {
+    NSDictionary * errorInfo;
+    if (error != NULL) {
+        errorInfo = @{NSUnderlyingErrorKey : error};;
+    }
+    [self tellDelegateAboutQuestionSearchError:errorInfo];
 }
 
 #pragma mark - Private Methods

@@ -7,6 +7,12 @@
 //
 
 NSString * const kItemsKey = @"items";
+NSString * const kQuestionIDKey = @"question_id";
+NSString * const kCreationDateKey = @"creation_date";
+NSString * const kTitleKey = @"title";
+NSString * const kScoreKey = @"score";
+NSString * const kOwnerKey = @"owner";
+NSString * const kBodyKey = @"body";
 
 #import "UTQuestionBuilder.h"
 
@@ -15,27 +21,60 @@ NSString * const QuestionBuilderErrorDomain = @"QuestionBuilderErrorDomain";
 @implementation UTQuestionBuilder
 
 - (NSArray *)questionsFromJSON:(NSString *)JSON error:(NSError *__autoreleasing *)error {
-    NSParameterAssert(JSON != nil);
-    NSData * jsonData = [JSON dataUsingEncoding:NSUTF8StringEncoding];
-    NSError * localError;
-    id parsedObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&localError];
-    if (parsedObject == nil) {
-        if (error != NULL) {
-            *error = [NSError errorWithDomain:QuestionBuilderErrorDomain code:QuestionBuilderInvalidJSONError userInfo:nil];
-        }
-        return nil;
-    }
+    id parsedObject = [self parseObjectFromJSON:JSON error:error];//
     if ([parsedObject isKindOfClass:[NSDictionary class]]) {
         NSDictionary * parsedDictionary = (NSDictionary *)parsedObject;
         NSArray * questions = [parsedDictionary objectForKey:kItemsKey];
+        NSMutableArray * returnQuestionArray = [[NSMutableArray alloc] initWithCapacity:questions.count];
+        for (NSDictionary * questionDictionary in questions) {
+            UTQuestion * questionObject = [self buildQuestionFromJSONDictionary:questionDictionary];
+            [returnQuestionArray addObject:questionObject];
+        }
         if (questions == nil) {
             if (error != NULL) {
                 *error = [NSError errorWithDomain:QuestionBuilderErrorDomain code:QuestionBuilderMissingDataError userInfo:nil];
             }
             return nil;
+        } else {
+            return [NSArray arrayWithArray:returnQuestionArray];
         }
     }
     return nil;
+}
+
+- (void)fillQuestionBodyFromQuestion:(UTQuestion *)question withJSON:(NSString *)JSON error:(NSError *__autoreleasing *)error {
+    NSParameterAssert(question != nil);
+    id parsedObject = [self parseObjectFromJSON:JSON error:error];
+    
+    if ([parsedObject isKindOfClass:[NSDictionary class]]) {
+        NSDictionary * parsedDictionary = (NSDictionary *)parsedObject;
+        NSString * bodyHTMLString = [parsedDictionary objectForKey:kBodyKey];
+        question.body = bodyHTMLString;
+    }
+}
+
+#pragma mark - Private methods
+
+- (id)parseObjectFromJSON:(NSString *)JSON error:(NSError *__autoreleasing *)error {
+    NSParameterAssert(JSON != nil);
+    NSData * jsonData = [JSON dataUsingEncoding:NSUTF8StringEncoding];
+    NSError * localError;
+    id parsedObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&localError];
+    if (error != NULL) {
+        *error = [NSError errorWithDomain:QuestionBuilderErrorDomain code:QuestionBuilderInvalidJSONError userInfo:nil];
+    }
+    return parsedObject;
+}
+
+- (UTQuestion *)buildQuestionFromJSONDictionary:(NSDictionary *)dictionary {
+    UTQuestion * question = [[UTQuestion alloc] init];
+    question.questionID = [[dictionary objectForKey:kQuestionIDKey] intValue];
+    NSTimeInterval timeIntervalSince1970 = [[dictionary objectForKey:kCreationDateKey] doubleValue];
+    question.date = [NSDate dateWithTimeIntervalSince1970:timeIntervalSince1970];
+    question.title = [dictionary objectForKey:kTitleKey];
+    question.score = [[dictionary objectForKey:kScoreKey] integerValue];
+    question.person = [UTPerson personFromJSONDictionary:[dictionary objectForKey:kOwnerKey]];
+    return question;
 }
 
 @end

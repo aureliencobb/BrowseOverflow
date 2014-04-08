@@ -17,4 +17,8 @@
     return self.arrayToReturn;
 }
 
+- (void)fillQuestionBodyFromJSON:(NSString *)JSON error:(NSError *__autoreleasing *)error {
+    self.JSON = JSON;
+}
+
 @end

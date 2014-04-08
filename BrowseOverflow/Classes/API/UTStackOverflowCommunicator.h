@@ -11,5 +11,6 @@
 @interface UTStackOverflowCommunicator : NSObject
 
 - (void)searchForQuestionsWithTag:(NSString *)tag;
+- (void)downloadQuestionBodyWithID:(NSUInteger)questionID;
 
 @end

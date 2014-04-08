@@ -36,9 +36,10 @@
     questionToFetch.questionID = 1234;
     questionArray = @[questionToFetch];
     questionBuilder = [[FakeQuestionBuilder alloc] init];
-    mgr.questionBuilder = questionBuilder;
-    underlyingError = [NSError errorWithDomain:@"Test Domain" code:0 userInfo:nil];
     communicator = [[MockStackOverflowCommunicator alloc] init];
+    mgr.questionBuilder = questionBuilder;
+    mgr.communicator = communicator;
+    underlyingError = [NSError errorWithDomain:@"Test Domain" code:0 userInfo:nil];
 }
 
 - (void)tearDown {
@@ -122,12 +123,18 @@
 
 - (void)testDelegateNotifiedOfFailureToFetchQuestion {
     [mgr fetchingQuestionBodyFailedWithError:underlyingError];
-    XCTAssertNotNil([[[delegate fetchError] userInfo] objectForKey:NSUnderlyingErrorKey], @"");
+    XCTAssertNotNil([[[delegate fetchError] userInfo] objectForKey:NSUnderlyingErrorKey], @"Delegate shouls have found out about this error");
 }
 
 - (void)testManagerPassesRetrievedQuestionBodyToQuestionBuilder {
     [mgr receivedQuestionBodyJSON:@"Fake JSON"];
     XCTAssertEqualObjects(questionBuilder.JSON, @"Fake JSON", @"Successfully retrieved data should be passed to the builder");
+}
+
+- (void)testManagerPassesQuestionItWasSentToQuestionBuilderForFillingIn {
+    [mgr fetchBodyForQuestion:questionToFetch];
+    [mgr receivedQuestionBodyJSON:@"Fake JSON"];
+    XCTAssertEqualObjects(questionBuilder.questionToFill, questionToFetch, @"Not receiving data should have been handled earlier");
 }
 
 @end

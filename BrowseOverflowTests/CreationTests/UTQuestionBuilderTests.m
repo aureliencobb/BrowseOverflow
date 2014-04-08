@@ -40,6 +40,10 @@ NSString * const kJSONWithOneQuestion = @"{"
               "}"
         "]"
 "}";
+NSString * const kNoJSON = @"Not a JSON object";
+NSString * const kNoQuestionJSON = @"{\"noquestions\":true}";
+NSString * const kEmptyQuestionJSON = @"{\"items\":[{}]}";
+NSString * const kValidBodyJSON = @"{\"body\":\"<p>This is some text in the body. <code>[Class message];</code></p>\"}";
 
 @interface UTQuestionBuilderTests : XCTestCase {
     UTQuestionBuilder * questionBuilder;
@@ -66,28 +70,27 @@ NSString * const kJSONWithOneQuestion = @"{"
 }
 
 - (void)testNilIsReturnedWhenStringIdNotJSON {
-    XCTAssertNil([questionBuilder questionsFromJSON:@"Not JSON" error:NULL], @"This parameter should not be parsable");
+    XCTAssertNil([questionBuilder questionsFromJSON:kNoJSON error:NULL], @"This parameter should not be parsable");
 }
 
 - (void)testErrorIsSetWhenStringIsNotJSON {
     NSError * error;
-    [questionBuilder questionsFromJSON:@"Not JSON" error:&error];
+    [questionBuilder questionsFromJSON:kNoJSON error:&error];
     XCTAssertNotNil(error, @"There should be an error with invalid JSON");
 }
 
 - (void)testPassingNULLErrorDoesNotThrow {
-    XCTAssertNoThrow([questionBuilder questionsFromJSON:@"Not JSON" error:NULL], @"The error parameter should not be required");
+    XCTAssertNoThrow([questionBuilder questionsFromJSON:kNoJSON error:NULL], @"The error parameter should not be required");
 }
 
 - (void)testRealJSONWithoutQuestionArrayIsError {
-    NSString * jsonString = @"{\"noquestions\":true}";
+    NSString * jsonString = kNoQuestionJSON;
     XCTAssertNil([questionBuilder questionsFromJSON:jsonString error:NULL], @"No questions are contained in this JSON");
 }
 
 - (void)testValidJSONWithMissingDataSendsCorrectCode {
-    NSString * jsonString = @"{\"noquestions\":true}";
     NSError * error;
-    [questionBuilder questionsFromJSON:jsonString error:&error];
+    [questionBuilder questionsFromJSON:kNoQuestionJSON error:&error];
     XCTAssertEqual(QuestionBuilderMissingDataError, [error code], @"Valid JSON but missing data should set QuestionBuilderMissingDataError code");
 }
 
@@ -108,9 +111,32 @@ NSString * const kJSONWithOneQuestion = @"{"
 }
 
 - (void)testQuestionCreatedFromEmptyObjectIsStillValid {
-    NSString * emptyQuestionsJSON = @"{\"items\":[{}]}";
-    NSArray * questions = [questionBuilder questionsFromJSON:emptyQuestionsJSON error:NULL];
+    NSArray * questions = [questionBuilder questionsFromJSON:kEmptyQuestionJSON error:NULL];
     XCTAssertEqual(1, [questions count], @"Builder should handle partial data input");
+}
+
+
+- (void)testBuildingQuestionBodyWithNoDataCannotBeTried {
+    XCTAssertThrows([questionBuilder fillQuestionBodyFromQuestion:question withJSON:nil error:nil], @"Not receiving data should have been handled earlier");
+}
+
+- (void)testBuildingQuestionBodyWithNoQuestionCannotBeTried {
+    XCTAssertThrows([questionBuilder fillQuestionBodyFromQuestion:nil withJSON:@"{\"key\":false}" error:nil], @"Nil questions should throw exception");
+}
+
+- (void)testNonJSONDataDoesNotCauseABodyToBeAddedToAQuestion {
+    [questionBuilder fillQuestionBodyFromQuestion:question withJSON:kNoJSON error:nil];
+    XCTAssertNil(question.body, @"An invalid JSON should not have created the question body");
+}
+
+- (void)testJSONWhichDoesNotContainBodyDoesNotCauseBodyToBeAdded {
+    [questionBuilder fillQuestionBodyFromQuestion:question withJSON:kNoQuestionJSON error:nil];
+    XCTAssertNil(question.body, @"A valid JSON with no body information should not cause a body to be added to a question");
+}
+
+- (void)testValidBodyInJSONIsAddedToQuestionBody {
+    [questionBuilder fillQuestionBodyFromQuestion:question withJSON:kValidBodyJSON error:nil];
+    XCTAssertEqualObjects(question.body, @"<p>This is some text in the body. <code>[Class message];</code></p>", @"Body should have received data.");
 }
 
 @end
