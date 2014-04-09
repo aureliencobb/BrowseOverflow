@@ -7,7 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UTAnswer.h"
+
+typedef NS_ENUM(NSInteger, AnswerBuilderErrorCode) {
+    AnswerBuilderInvalidJSONError = 3456,
+    AnswerBuilderMissingDataError = 3457
+};
+
 
 @interface UTAnswerBuilder : NSObject
+
+- (NSArray *)answersFromJSON:(NSString *)objectNotation error:(NSError *__autoreleasing *)error;
 
 @end

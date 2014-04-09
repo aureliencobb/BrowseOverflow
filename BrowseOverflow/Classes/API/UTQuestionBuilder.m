@@ -42,24 +42,12 @@ NSString * const QuestionBuilderErrorDomain = @"QuestionBuilderErrorDomain";
     return nil;
 }
 
-- (void)fillQuestionBodyFromQuestion:(UTQuestion *)question withJSON:(NSString *)JSON error:(NSError *__autoreleasing *)error {
-    NSParameterAssert(question != nil);
-    id parsedObject = [self parseObjectFromJSON:JSON error:error];
-    
-    if ([parsedObject isKindOfClass:[NSDictionary class]]) {
-        NSDictionary * parsedDictionary = (NSDictionary *)parsedObject;
-        NSString * bodyHTMLString = [parsedDictionary objectForKey:kBodyKey];
-        question.body = bodyHTMLString;
-    }
-}
-
 #pragma mark - Private methods
 
 - (id)parseObjectFromJSON:(NSString *)JSON error:(NSError *__autoreleasing *)error {
     NSParameterAssert(JSON != nil);
     NSData * jsonData = [JSON dataUsingEncoding:NSUTF8StringEncoding];
-    NSError * localError;
-    id parsedObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&localError];
+    id parsedObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:error];
     if (error != NULL) {
         *error = [NSError errorWithDomain:QuestionBuilderErrorDomain code:QuestionBuilderInvalidJSONError userInfo:nil];
     }
@@ -74,6 +62,7 @@ NSString * const QuestionBuilderErrorDomain = @"QuestionBuilderErrorDomain";
     question.title = [dictionary objectForKey:kTitleKey];
     question.score = [[dictionary objectForKey:kScoreKey] integerValue];
     question.person = [UTPerson personFromJSONDictionary:[dictionary objectForKey:kOwnerKey]];
+    question.body = [dictionary objectForKey:kBodyKey];
     return question;
 }
 

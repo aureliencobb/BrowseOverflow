@@ -18,4 +18,8 @@
     self.receivedQuestions = questions;
 }
 
+- (void)didReceiveAnswers:(NSArray *)answers {
+    self.receivedAnswers = answers;
+}
+
 @end

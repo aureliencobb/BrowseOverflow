@@ -10,6 +10,7 @@
 #import "UTStackOverflowCommunicator.h"
 #import "UTTopic.h"
 #import "UTQuestionBuilder.h"
+#import "UTAnswerBuilder.h"
 
 extern NSString * StackOverflowManagerError;
 extern NSString * StackOverflowSearchFailedError;
@@ -24,20 +25,21 @@ typedef NS_ENUM(NSInteger, StackOverflowManagerErrorCode) {
 
 - (void)fetchingQuestionsFailedWithError:(NSError *)error;
 - (void)didReceiveQuestions:(NSArray *)questions;
+- (void)didReceiveAnswers:(NSArray *)answers;
 
 @end
 
 @interface UTStackOverflowManager : NSObject
 
 - (void)fetchQuestionsOnTopic:(UTTopic *)topic;
-- (void)fetchBodyForQuestion:(UTQuestion *)question;
 - (void)fetchingQuestionBodyFailedWithError:(NSError *)error;
 - (void)searchingForQuestionsFailedWithError:(NSError *)error;
 - (void)receivedQuestionsJSON:(NSString *)objectNotation;
-- (void)receivedQuestionBodyJSON:(NSString *)objectNotation;
+- (void)receivedAnswersJSON:(NSString *)objectNotation;
 
 @property (weak, nonatomic) id<UTStackOverflowManagerDelegate> delegate;
 @property (strong, nonatomic) UTStackOverflowCommunicator * communicator;
 @property (strong, nonatomic) UTQuestionBuilder * questionBuilder;
+@property (strong, nonatomic) UTAnswerBuilder * answerBuilder;
 
 @end

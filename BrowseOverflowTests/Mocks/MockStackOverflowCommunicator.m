@@ -8,25 +8,14 @@
 
 #import "MockStackOverflowCommunicator.h"
 
-@implementation MockStackOverflowCommunicator {
-    BOOL _wasAskedForQuestions;
-    BOOL _wasAskedForBody;
-}
-
-- (BOOL)wasAskedToFetchQuestions {
-    return _wasAskedForQuestions;
-}
-
-- (BOOL)wasAskedToFetchBody {
-    return _wasAskedForBody;
-}
+@implementation MockStackOverflowCommunicator
 
 - (void)searchForQuestionsWithTag:(NSString *)tag {
-    _wasAskedForQuestions = YES;
+    _wasAskedToFetchQuestions = YES;
 }
 
-- (void)downloadQuestionBodyWithID:(NSUInteger)questionID {
-    _wasAskedForBody = YES;
+- (void)downloadAnswersForQuestionID:(NSInteger)questionID {
+    _wasAskedToFetchAnswers = YES;
 }
 
 @end

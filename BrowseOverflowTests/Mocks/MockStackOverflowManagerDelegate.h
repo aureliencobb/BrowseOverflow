@@ -12,7 +12,7 @@
 @interface MockStackOverflowManagerDelegate : NSObject <UTStackOverflowManagerDelegate>
 
 @property (strong, nonatomic) NSError * fetchError;
-
+@property (copy, nonatomic) NSArray * receivedAnswers;
 @property (copy, nonatomic) NSArray * receivedQuestions;
 
 @end

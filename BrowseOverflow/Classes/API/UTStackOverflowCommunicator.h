@@ -8,9 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface UTStackOverflowCommunicator : NSObject
+@interface UTStackOverflowCommunicator : NSObject {
+@protected
+    NSURL * _fetchingURL;
+    NSURLConnection * _fetchingConnection;
+}
 
 - (void)searchForQuestionsWithTag:(NSString *)tag;
-- (void)downloadQuestionBodyWithID:(NSUInteger)questionID;
+- (void)downloadAnswersForQuestionID:(NSInteger)questionID;
+- (void)cancelAndDiscardURLConnection;
 
 @end

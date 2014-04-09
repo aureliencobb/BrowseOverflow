@@ -10,7 +10,7 @@
 
 @interface MockStackOverflowCommunicator : UTStackOverflowCommunicator
 
-- (BOOL)wasAskedToFetchQuestions;
-- (BOOL)wasAskedToFetchBody;
+@property (assign, readonly) BOOL wasAskedToFetchQuestions;
+@property (assign, readonly) BOOL wasAskedToFetchAnswers;
 
 @end

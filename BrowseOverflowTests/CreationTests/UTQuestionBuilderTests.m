@@ -115,28 +115,4 @@ NSString * const kValidBodyJSON = @"{\"body\":\"<p>This is some text in the body
     XCTAssertEqual(1, [questions count], @"Builder should handle partial data input");
 }
 
-
-- (void)testBuildingQuestionBodyWithNoDataCannotBeTried {
-    XCTAssertThrows([questionBuilder fillQuestionBodyFromQuestion:question withJSON:nil error:nil], @"Not receiving data should have been handled earlier");
-}
-
-- (void)testBuildingQuestionBodyWithNoQuestionCannotBeTried {
-    XCTAssertThrows([questionBuilder fillQuestionBodyFromQuestion:nil withJSON:@"{\"key\":false}" error:nil], @"Nil questions should throw exception");
-}
-
-- (void)testNonJSONDataDoesNotCauseABodyToBeAddedToAQuestion {
-    [questionBuilder fillQuestionBodyFromQuestion:question withJSON:kNoJSON error:nil];
-    XCTAssertNil(question.body, @"An invalid JSON should not have created the question body");
-}
-
-- (void)testJSONWhichDoesNotContainBodyDoesNotCauseBodyToBeAdded {
-    [questionBuilder fillQuestionBodyFromQuestion:question withJSON:kNoQuestionJSON error:nil];
-    XCTAssertNil(question.body, @"A valid JSON with no body information should not cause a body to be added to a question");
-}
-
-- (void)testValidBodyInJSONIsAddedToQuestionBody {
-    [questionBuilder fillQuestionBodyFromQuestion:question withJSON:kValidBodyJSON error:nil];
-    XCTAssertEqualObjects(question.body, @"<p>This is some text in the body. <code>[Class message];</code></p>", @"Body should have received data.");
-}
-
 @end

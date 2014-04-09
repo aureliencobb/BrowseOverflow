@@ -49,13 +49,18 @@ NSString * StackOverflowSearchFailedError = @"StackOverflowSearchFailedError";
     }
 }
 
-- (void)receivedQuestionBodyJSON:(NSString *)objectNotation {
-    [self.questionBuilder fillQuestionBodyFromQuestion:self.questionNeedingBody withJSON:objectNotation error:nil];
-}
-
-- (void)fetchBodyForQuestion:(UTQuestion *)question {
-    [self.communicator downloadQuestionBodyWithID:question.questionID];
-    self.questionBuilder.questionToFill = question;
+- (void)receivedAnswersJSON:(NSString *)objectNotation {
+    NSError * error;
+    NSArray * answers = [self.answerBuilder answersFromJSON:objectNotation error:&error];
+    if (!answers) {
+        NSDictionary * errorInfo;
+        if (error) {
+            errorInfo = @{NSUnderlyingErrorKey : error};
+        }
+        [self tellDelegateAboutQuestionSearchError:errorInfo];
+    } else {
+        [self.delegate didReceiveAnswers:answers];
+    }
 }
 
 - (void)fetchingQuestionBodyFailedWithError:(NSError *)error {
