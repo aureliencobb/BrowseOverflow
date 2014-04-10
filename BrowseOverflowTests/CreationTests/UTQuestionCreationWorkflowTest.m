@@ -116,9 +116,4 @@
     XCTAssertEqualObjects([delegate receivedQuestions], [NSArray array], @"It should be acceptable to pass an empty array to the delegate");
 }
 
-- (void)testDelegateNotifiedOfFailureToFetchQuestion {
-    [mgr fetchingQuestionBodyFailedWithError:underlyingError];
-    XCTAssertNotNil([[[delegate fetchError] userInfo] objectForKey:NSUnderlyingErrorKey], @"Delegate shouls have found out about this error");
-}
-
 @end

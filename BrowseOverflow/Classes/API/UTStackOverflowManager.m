@@ -30,10 +30,14 @@ NSString * StackOverflowSearchFailedError = @"StackOverflowSearchFailedError";
     [self.communicator searchForQuestionsWithTag:topic.tag];
 }
 
+#pragma mark -
+
 - (void)searchingForQuestionsFailedWithError:(NSError *)error {
     NSDictionary * errorInfo = @{NSUnderlyingErrorKey : error};
     [self tellDelegateAboutQuestionSearchError:errorInfo];
 }
+
+
 
 - (void)receivedQuestionsJSON:(NSString *)objectNotation {
     NSError * error;
@@ -63,18 +67,20 @@ NSString * StackOverflowSearchFailedError = @"StackOverflowSearchFailedError";
     }
 }
 
-- (void)fetchingQuestionBodyFailedWithError:(NSError *)error {
-    NSDictionary * errorInfo;
-    if (error != NULL) {
-        errorInfo = @{NSUnderlyingErrorKey : error};;
-    }
-    [self tellDelegateAboutQuestionSearchError:errorInfo];
+- (void)dowloadingAnswersFailedWithError:(NSError *)error {
+    NSDictionary * errorInfo = @{NSUnderlyingErrorKey : error};
+    [self tellDelegateAboutAnswerDownloadError:errorInfo];
 }
 
 #pragma mark - Private Methods
 
 - (void)tellDelegateAboutQuestionSearchError:(NSDictionary *)errorInfo {
     NSError * reportableError = [NSError errorWithDomain:StackOverflowSearchFailedError code:StackOverflowManagerErrorQuestionSearchCode userInfo:errorInfo];
+    [self.delegate fetchingQuestionsFailedWithError:reportableError];
+}
+
+- (void)tellDelegateAboutAnswerDownloadError:(NSDictionary *)errorInfo {
+    NSError * reportableError = [NSError errorWithDomain:StackOverflowSearchFailedError code:StackOverflowManagerErrorAnswerDownloadCode userInfo:errorInfo];
     [self.delegate fetchingQuestionsFailedWithError:reportableError];
 }
 

@@ -16,7 +16,8 @@ extern NSString * StackOverflowManagerError;
 extern NSString * StackOverflowSearchFailedError;
 
 typedef NS_ENUM(NSInteger, StackOverflowManagerErrorCode) {
-    StackOverflowManagerErrorQuestionSearchCode
+    StackOverflowManagerErrorQuestionSearchCode = 3332,
+    StackOverflowManagerErrorAnswerDownloadCode = 3333
 };
 
 @class UTStackOverflowManager;
@@ -29,10 +30,9 @@ typedef NS_ENUM(NSInteger, StackOverflowManagerErrorCode) {
 
 @end
 
-@interface UTStackOverflowManager : NSObject
+@interface UTStackOverflowManager : NSObject <UTStackOverflowCommunicatorDelegate>
 
 - (void)fetchQuestionsOnTopic:(UTTopic *)topic;
-- (void)fetchingQuestionBodyFailedWithError:(NSError *)error;
 - (void)searchingForQuestionsFailedWithError:(NSError *)error;
 - (void)receivedQuestionsJSON:(NSString *)objectNotation;
 - (void)receivedAnswersJSON:(NSString *)objectNotation;

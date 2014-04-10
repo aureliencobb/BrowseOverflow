@@ -8,11 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
-@interface UTStackOverflowCommunicator : NSObject {
-@protected
-    NSURL * _fetchingURL;
-    NSURLConnection * _fetchingConnection;
-}
+extern NSString * const StackOverFlowComminucationErrorDomain;
+
+@protocol UTStackOverflowCommunicatorDelegate <NSObject>
+
+- (void)searchingForQuestionsFailedWithError:(NSError *)error;
+- (void)receivedQuestionsJSON:(NSString *)objectNotation;
+- (void)dowloadingAnswersFailedWithError:(NSError *)error;
+- (void)receivedAnswersJSON:(NSString *)objectNotation;
+
+@end
+
+@interface UTStackOverflowCommunicator : NSObject <NSURLConnectionDataDelegate>
+
+@property (nonatomic, weak) id <UTStackOverflowCommunicatorDelegate> delegate;
 
 - (void)searchForQuestionsWithTag:(NSString *)tag;
 - (void)downloadAnswersForQuestionID:(NSInteger)questionID;
